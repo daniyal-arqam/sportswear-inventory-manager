@@ -220,11 +220,11 @@ Possible improvements include webhook authentication, supplier notifications, ca
 
 ## Assignment Report
 
-[View Assignment Report](Sportswear-Inventory-Manager-Report.pdf)
+[View Assignment Report](Sportswear%20Inventory%20Manager%20Final%20Report.pdf)
 
 ## n8n Workflow
 
-[View n8n Workflow JSON](Sportswear-Inventory-Manager.json)
+[View n8n Workflow JSON](Sportswear%20Inventory%20Manager.json)
 
 ## Author
 
