@@ -1,10 +1,10 @@
-# 🏪 Sportswear Inventory Manager
+# Sportswear Inventory Manager
 
 An automated sportswear inventory management workflow built with **n8n, Google Sheets, Groq Chat Model, and an AI Agent**.
 
 I built this project to handle common inventory problems such as invalid product data, duplicate SKUs, missing optional values, and low-stock situations. The workflow validates incoming data before storing it and uses an AI Agent to generate reorder recommendations when stock becomes low.
 
-## 📌 Main Features
+## Main Features
 
 - POST webhook for inventory input
 - Required-field validation
@@ -18,7 +18,7 @@ I built this project to handle common inventory problems such as invalid product
 - Separate `Reorder_Alerts` sheet
 - Clear 400/409 response handling
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 |---|---|
@@ -29,7 +29,7 @@ I built this project to handle common inventory problems such as invalid product
 | Hoppscotch | Webhook/API testing |
 | JSON | API payload and workflow export |
 
-## 🔄 Workflow Architecture
+## Workflow Architecture
 
 ```text
 Webhook
@@ -56,11 +56,11 @@ Success Response
 
 ![Complete n8n Workflow](screenshots/workflow-overview.png)
 
-## 📦 Inventory Data
+## Inventory Data
 
 The workflow processes `item_name`, `sku`, `category`, `size`, `price`, `stock_quantity`, and `supplier`. It also stores a calculated stock status and timestamp. Size is optional and can be stored as `N/A` when missing.
 
-## 🧪 Testing & Edge Cases
+## Testing & Edge Cases
 
 ### Existing SKU Test
 The request using `TEST-VALID-001` was correctly identified as a duplicate and returned **409 Conflict**.
@@ -97,11 +97,11 @@ Another request using `TEST-VALID-001` was correctly blocked with **409 Conflict
 
 ![Duplicate Product](screenshots/duplicate-product.png)
 
-## 🤖 AI Agent
+## AI Agent
 
 The low-stock trigger is rule-based (`stock_quantity <= 5`). Once triggered, the AI Agent analyzes the situation, assigns urgency, recommends a reorder quantity, provides a short reason, and uses its connected Google Sheets tool to record the recommendation.
 
-## 📊 Google Sheets Results
+## Google Sheets Results
 
 ### Main Inventory Sheet
 Validated inventory records are stored with item name, SKU, category, size, price, stock quantity, supplier, stock status, and timestamp. The sheet also demonstrates the `N/A` fallback for a missing size.
@@ -113,11 +113,11 @@ The `Reorder_Alerts` sheet stores AI-assisted low-stock decisions including SKU,
 
 ![Reorder Alerts](screenshots/reorder-alerts.png)
 
-## 🧠 Rule-Based Logic vs AI
+## Rule-Based Logic vs AI
 
 Rule-based logic handles validation, price/stock rules, the low-stock threshold, duplicate detection, and HTTP responses. AI is reserved for the reorder recommendation, urgency classification, reason, and tool-assisted alert creation.
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 sportswear-inventory-manager/
@@ -137,7 +137,7 @@ sportswear-inventory-manager/
     └── reorder-alerts.png
 ```
 
-## 🚀 How to Use
+## How to Use
 
 1. Import `Sportswear-Inventory-Manager.json` into n8n.
 2. Configure your own Google Sheets credentials.
@@ -148,19 +148,19 @@ sportswear-inventory-manager/
 
 > **Security:** API keys, OAuth tokens, passwords, and private credentials should never be committed to this repository. Configure your own credentials inside n8n.
 
-## 🔮 Future Improvements
+## Future Improvements
 
 Possible improvements include webhook authentication, supplier notifications, category-specific stock thresholds, inventory update/return operations, stronger SKU validation, audit logging, and reorder recommendations based on sales history.
 
-## 📄 Assignment Report
+## Assignment Report
 
 [View Assignment Report](Sportswear-Inventory-Manager-Report.pdf)
 
-## ⚡ n8n Workflow
+## n8n Workflow
 
 [View n8n Workflow JSON](Sportswear-Inventory-Manager.json)
 
-## 👨‍💻 Author
+## Author
 
 **Daniyal Arqam**
 
