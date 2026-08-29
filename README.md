@@ -57,7 +57,7 @@ The workflow receives inventory data through a webhook, validates the input, che
 
 ### Complete n8n Workflow
 
-![Complete n8n Workflow](screenshots/Screenshot%202026-08-29%20225839.png)
+![Complete n8n Workflow](ScreenShots/Screenshot%202026-08-29%20225839.png)
 
 ---
 
@@ -69,7 +69,7 @@ I tested the workflow with different inventory scenarios to verify validation, d
 
 The request using `TEST-VALID-001` was correctly identified as a duplicate and returned **409 Conflict**.
 
-![Existing SKU Test](screenshots/Screenshot%202026-08-29%20225911.png)
+![Existing SKU Test](ScreenShots/Screenshot%202026-08-29%20225911.png)
 
 ---
 
@@ -77,7 +77,7 @@ The request using `TEST-VALID-001` was correctly identified as a duplicate and r
 
 A product with a stock quantity of `2` was sent through the workflow to trigger the low-stock AI path.
 
-![Low Stock AI Test](screenshots/Screenshot%202026-08-29%20225926.png)
+![Low Stock AI Test](ScreenShots/Screenshot%202026-08-29%20225926.png)
 
 ---
 
@@ -85,7 +85,7 @@ A product with a stock quantity of `2` was sent through the workflow to trigger 
 
 A product with a stock quantity of `-4` was correctly rejected with **400 Bad Request**.
 
-![Negative Stock Test](screenshots/Screenshot%202026-08-29%20225937.png)
+![Negative Stock Test](ScreenShots/Screenshot%202026-08-29%20225937.png)
 
 ---
 
@@ -93,7 +93,7 @@ A product with a stock quantity of `-4` was correctly rejected with **400 Bad Re
 
 A product with a price of `0` was correctly rejected with **400 Bad Request**.
 
-![Zero Price Test](screenshots/Screenshot%202026-08-29%20225947.png)
+![Zero Price Test](ScreenShots/Screenshot%202026-08-29%20225947.png)
 
 ---
 
@@ -101,7 +101,7 @@ A product with a price of `0` was correctly rejected with **400 Bad Request**.
 
 A request with an empty SKU was rejected with **400 Bad Request** because SKU is a required field.
 
-![Missing SKU Test](screenshots/Screenshot%202026-08-29%20225957.png)
+![Missing SKU Test](ScreenShots/Screenshot%202026-08-29%20225957.png)
 
 ---
 
@@ -111,7 +111,7 @@ The `size` field is optional in the workflow. When it is missing, the stored inv
 
 This screenshot is from a later request using the same SKU, so the workflow correctly detects it as an existing SKU and returns **409 Conflict**.
 
-![Optional Size Test](screenshots/Screenshot%202026-08-29%20230007.png)
+![Optional Size Test](ScreenShots/Screenshot%202026-08-29%20230007.png)
 
 ---
 
@@ -119,7 +119,7 @@ This screenshot is from a later request using the same SKU, so the workflow corr
 
 Another product request using the already stored SKU `TEST-VALID-001` was correctly blocked and returned **409 Conflict**.
 
-![Duplicate Product Test](screenshots/Screenshot%202026-08-29%20230018.png)
+![Duplicate Product Test](ScreenShots/Screenshot%202026-08-29%20230018.png)
 
 ---
 
@@ -143,7 +143,7 @@ The sheet contains:
 
 The sheet also demonstrates that a missing optional size is stored as `N/A`.
 
-![Main Inventory Sheet](screenshots/Screenshot%202026-08-29%20230151.png)
+![Main Inventory Sheet](ScreenShots/Screenshot%202026-08-29%20230151.png)
 
 ---
 
@@ -162,7 +162,7 @@ The `Reorder_Alerts` sheet contains:
 - Reason
 - Timestamp
 
-![AI Reorder Alerts](screenshots/Screenshot%202026-08-29%20230212.png)
+![AI Reorder Alerts](ScreenShots/Screenshot%202026-08-29%20230212.png)
 
 ---
 
