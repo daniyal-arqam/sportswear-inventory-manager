@@ -54,7 +54,7 @@ Success Response
 
 ### Complete n8n Workflow
 
-![Complete n8n Workflow](screenshots/Screenshot%202026-08-29%20225839(1).png)
+![Complete n8n Workflow](Screenshot 2026-08-29 225839.png)
 
 ## Inventory Data
 
