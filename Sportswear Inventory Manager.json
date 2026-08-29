@@ -1,0 +1,923 @@
+{
+  "name": "Sportswear Inventory Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Inventory",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        -80
+      ],
+      "id": "5369019f-07bc-4ab8-b09f-d5ea94b2cde5",
+      "name": "Webhook",
+      "webhookId": "2f9064b5-f439-4631-90e0-d35993382e88"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "658d3a23-6210-4a8e-be84-e91e01fb51fc",
+              "leftValue": "={{ $json.body.item_name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "381cf6b7-8385-4c37-95a8-147b0cb0ae5b",
+              "leftValue": "={{ $json.body.sku }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9bc979d8-d652-4975-87b5-1aaa6d8c877c",
+              "leftValue": "={{ $json.body.category }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "e732cf0d-aafb-46f0-8ba9-d679b5af63e2",
+              "leftValue": "={{ $json.body.price }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "31f79340-11ad-4b3a-9300-e1af96186a00",
+              "leftValue": "={{ $json.body.stock_quantity }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "5b5f6c2d-3dab-4dac-9761-7dc70a8339b5",
+              "leftValue": "={{ $json.body.supplier }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        -80
+      ],
+      "id": "add81af0-56c1-44e7-86b7-853c305b5056",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6d912274-9bfc-4174-99e1-9cec0174b49c",
+              "leftValue": "={{ $json.body.stock_quantity }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        464,
+        -208
+      ],
+      "id": "1fd72626-8abb-4b53-a94e-e725502792dd",
+      "name": "Low Stock Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ffeeb3f-8395-4ece-bafb-67905c9af31c",
+              "name": "item_name",
+              "value": "={{ $('Webhook').item.json.body.item_name.trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "83266b15-d78c-4bc8-86d0-341cf0514b14",
+              "name": "sku",
+              "value": "={{ $('Webhook').item.json.body.sku.trim().toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "45f806b2-08b9-4016-8108-a3e645781fd6",
+              "name": "category",
+              "value": "={{ $('Webhook').item.json.body.category.trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "af7f04e2-1dbc-45eb-bf6f-0fb906ff9455",
+              "name": "size",
+              "value": "={{ $('Webhook').item.json.body.size || \"N/A\" }}",
+              "type": "string"
+            },
+            {
+              "id": "e470bdfa-6e81-4e62-ad89-698e517db490",
+              "name": "price",
+              "value": "={{ Number($('Webhook').item.json.body.price) }}",
+              "type": "number"
+            },
+            {
+              "id": "557a6e89-067a-48e4-ad22-4c77d2deea22",
+              "name": "stock_quantity",
+              "value": "={{ Number($('Webhook').item.json.body.stock_quantity) }}",
+              "type": "number"
+            },
+            {
+              "id": "97b145f8-3716-4daf-8dd1-84660b046683",
+              "name": "supplier",
+              "value": "={{ $('Webhook').item.json.body.supplier || \"Unknown\" }}",
+              "type": "string"
+            },
+            {
+              "id": "1776553c-5ef8-496c-bf0e-0f4a219c15dd",
+              "name": "stock_status",
+              "value": "={{ Number($('Webhook').item.json.body.stock_quantity) <= 5 ? 'Low Stock' : 'In Stock' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        704,
+        -192
+      ],
+      "id": "a86423c4-3462-4dc0-9105-674444bfe670",
+      "name": "Prepare Inventory Data"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE",
+          "mode": "list",
+          "cachedResultName": "Sportswear Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Sku",
+              "lookupValue": "={{ $('Prepare Inventory Data').item.json.sku }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        -192
+      ],
+      "id": "e01d4c02-d138-47eb-8a20-71c305d347d2",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "85vBPTc4cPJmCMZB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "db502084-0b4a-4ab6-a665-0182f77a499f",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1088,
+        -192
+      ],
+      "id": "64ba419b-d943-4a94-800b-2ac41333192e",
+      "name": "Duplicate Sku Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "790d4a9f-b46e-4fda-8016-95e670d1d4bc",
+              "name": "success",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "9e202931-288f-49d0-9535-e3a880605079",
+              "name": "status",
+              "value": "duplicate_sku",
+              "type": "string"
+            },
+            {
+              "id": "0f0f0baf-29f8-4079-962a-2e2f7b21ed6d",
+              "name": "message",
+              "value": "Product with this SKU already exists",
+              "type": "string"
+            },
+            {
+              "id": "7daa622c-9dd9-4378-aa94-433b4c80f749",
+              "name": "Sku",
+              "value": "={{ $json.Sku }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1328,
+        -288
+      ],
+      "id": "f1593b94-f29d-40c7-9251-c8d3f707889d",
+      "name": "Duplicate Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": false,\n  \"status\": \"duplicate_sku\",\n  \"message\": \"Product with this SKU already exists\",\n  \"sku\": $json.Sku\n} }}",
+        "options": {
+          "responseCode": 409
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1520,
+        -288
+      ],
+      "id": "68302a96-e26a-4e50-b351-e4303d1d3a93",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE",
+          "mode": "list",
+          "cachedResultName": "Sportswear Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_Name": "={{ $('Prepare Inventory Data').item.json.item_name }}",
+            "Sku": "={{ $('Prepare Inventory Data').item.json.sku }}",
+            "Category": "={{ $('Prepare Inventory Data').item.json.category }}",
+            "Size": "={{ $('Prepare Inventory Data').item.json.size }}",
+            "Price": "={{ $('Prepare Inventory Data').item.json.price }}",
+            "Stock_Quantity": "={{ $('Prepare Inventory Data').item.json.stock_quantity }}",
+            "Supplier": "={{ $('Prepare Inventory Data').item.json.supplier }}",
+            "Stock_status": "={{ $('Prepare Inventory Data').item.json.stock_status }}",
+            "Time_Stamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Item_Name",
+              "displayName": "Item_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sku",
+              "displayName": "Sku",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Size",
+              "displayName": "Size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stock_Quantity",
+              "displayName": "Stock_Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Supplier",
+              "displayName": "Supplier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stock_status",
+              "displayName": "Stock_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time_Stamp",
+              "displayName": "Time_Stamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1328,
+        -96
+      ],
+      "id": "b8074a64-986c-4d63-a6f3-9dd908708de1",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "85vBPTc4cPJmCMZB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a789b012-f45b-4baa-a352-06c23e6b4a70",
+              "name": "success",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "1f56fb53-3a33-4c0a-b03b-0141f56d22d5",
+              "name": "status",
+              "value": "created",
+              "type": "string"
+            },
+            {
+              "id": "7bfc1729-7f1d-4fcf-b2f6-24247d4cb2eb",
+              "name": "message",
+              "value": "Product added successfully",
+              "type": "string"
+            },
+            {
+              "id": "912d23be-e214-4aef-837d-61b09bd165f7",
+              "name": "sku",
+              "value": "={{ $('Prepare Inventory Data').item.json.sku }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1520,
+        -96
+      ],
+      "id": "c093b970-638f-4405-a52f-1d6cc7847c3d",
+      "name": "Success Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"status\": \"created\",\n  \"message\": \"Product added successfully\",\n  \"sku\": $json.sku\n} }}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1728,
+        -96
+      ],
+      "id": "dc131ddd-b2aa-40e6-9200-ff40d58167ca",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfc8292c-efe3-46fc-80ac-c302f2164ddf",
+              "name": "success",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "d0f95063-f636-4e58-ab9b-dd3fc1aef9b4",
+              "name": "status",
+              "value": "validation_failed",
+              "type": "string"
+            },
+            {
+              "id": "fca93d88-3388-4ef8-9626-e0aef0e8a055",
+              "name": "message",
+              "value": "Invalid inventory data",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        464,
+        32
+      ],
+      "id": "967e2040-883c-48c2-bb09-e79f3efb2be3",
+      "name": "Invalid Data Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": $json.success,\n  \"status\": $json.status,\n  \"message\": $json.message\n} }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        656,
+        32
+      ],
+      "id": "f4d2a207-20b6-4bbe-a9f2-5211aa5023dc",
+      "name": "Invalid Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze this low-stock inventory item and create a reorder recommendation.\n\nItem Name: {{ $json.body.item_name }}\nSKU: {{ $json.body.sku }}\nCategory: {{ $json.body.category }}\nSize: {{ $json.body.size || \"N/A\" }}\nPrice: {{ $json.body.price }}\nCurrent Stock: {{ $json.body.stock_quantity }}\nSupplier: {{ $json.body.supplier || \"Unknown\" }}\n\nThis item has already passed validation and has been classified as low stock.\n\nYou MUST use the connected Google Sheets reorder tool exactly once to save the reorder recommendation before returning your final answer.\n\nDetermine the urgency according to the system rules and calculate a reasonable reorder quantity.\n\nAfter successfully calling the Google Sheets tool, return a concise summary containing:\nSKU, Current Stock, Urgency, Recommended Reorder Quantity, and Reason.",
+        "options": {
+          "systemMessage": "You are an AI Inventory Reorder Agent for a sportswear inventory management system.\n\nYour responsibility is to analyze low-stock inventory items and make practical restocking decisions.\n\nRules:\n1. Analyze the item's current stock quantity, category, price, supplier, and SKU.\n2. Classify stock urgency as:\n   - CRITICAL: stock quantity 0-2\n   - HIGH: stock quantity 3-5\n   - MEDIUM: stock quantity 6-10\n   - LOW: stock quantity above 10\n3. Recommend a reasonable reorder quantity based on current stock.\n4. Never modify the SKU, item name, price, or supplier.\n5. Do not invent missing inventory information.\n6. When a suitable inventory/reorder tool is available, use that tool to record the reorder recommendation.\n7. Keep the reason short and business-focused.\n8. Return a concise response containing SKU, urgency, current stock, recommended reorder quantity, and reason.\n\nIMPORTANT TOOL-CALL RULE:\n\nFor every inventory item you receive, you MUST call the connected Google Sheets reorder tool exactly once before giving your final response.\n\nThe Google Sheets tool call is mandatory. Do not only provide a reorder recommendation in text.\n\nWhen calling the tool, provide:\n- SKU: the exact SKU received\n- Item_Name: the exact item name received\n- Current_Stock: the exact current stock quantity\n- Urgency: CRITICAL if stock is 0-2, HIGH if stock is 3-5\n- Recommended_Reorder_Qty: your recommended reorder quantity\n- Supplier: the exact supplier received\n- Reason: a short explanation for the reorder decision\n\nYou must complete the Google Sheets tool call first, then return your final response."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        800,
+        -528
+      ],
+      "id": "fc5bcd92-ddcb-4313-934a-f45e340db6ce",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -352
+      ],
+      "id": "6bea0074-28ed-49e0-915d-47d6d96d3478",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "z1RTyvs9xLlZOVD6",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to record a low-stock reorder recommendation in the Reorder_Alerts Google Sheet.\n\nYou MUST use this tool once for every low-stock inventory item.\n\nProvide the exact SKU, Item_Name, Current_Stock, Supplier and the calculated Urgency, Recommended_Reorder_Qty, and Reason.\n\nThis tool creates one new reorder alert row in Google Sheets.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE",
+          "mode": "list",
+          "cachedResultName": "Sportswear Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 672324553,
+          "mode": "list",
+          "cachedResultName": "Reorder_Alerts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE/edit#gid=672324553"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "SKU": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('SKU', ``, 'string') }}",
+            "Item_Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Item_Name', ``, 'string') }}",
+            "Current_Stock": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Current_Stock', ``, 'string') }}",
+            "Urgency": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Urgency', ``, 'string') }}",
+            "Recommended_Reorder_Qty": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Recommended_Reorder_Qty', ``, 'string') }}",
+            "Supplier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Supplier', ``, 'string') }}",
+            "Reason ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Reason_', ``, 'string') }}",
+            "Time_Stamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "SKU",
+              "displayName": "SKU",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Item_Name",
+              "displayName": "Item_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Current_Stock",
+              "displayName": "Current_Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Urgency",
+              "displayName": "Urgency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recommended_Reorder_Qty",
+              "displayName": "Recommended_Reorder_Qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Supplier",
+              "displayName": "Supplier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reason ",
+              "displayName": "Reason ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time_Stamp",
+              "displayName": "Time_Stamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        -352
+      ],
+      "id": "d8e5b022-d388-4c1f-8e4a-5492adaf3162",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "85vBPTc4cPJmCMZB",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Low Stock Check",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Invalid Data Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Low Stock Check": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Inventory Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Inventory Data": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Duplicate Sku Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicate Sku Check": {
+      "main": [
+        [
+          {
+            "node": "Duplicate Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicate Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invalid Data Response": {
+      "main": [
+        [
+          {
+            "node": "Invalid Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Prepare Inventory Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "78eb3cf3-033d-4d02-acfc-8836843cf17a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5fc893b3ac67c3cb64c342c8bd9b8be3ca5bfac98bf813c969b04cbb32ed68cd"
+  },
+  "nodeGroups": [],
+  "id": "XboR6jniGUjAK4Y6",
+  "tags": []
+}
