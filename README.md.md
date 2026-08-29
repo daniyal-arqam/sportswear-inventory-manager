@@ -54,7 +54,7 @@ Success Response
 
 ### Complete n8n Workflow
 
-![Complete n8n Workflow](screenshots/workflow-overview.png)
+![Complete n8n Workflow](screenshots/Screenshot%202026-08-29%20225839(1).png)
 
 ## Inventory Data
 
@@ -62,56 +62,89 @@ The workflow processes `item_name`, `sku`, `category`, `size`, `price`, `stock_q
 
 ## Testing & Edge Cases
 
+I tested the workflow using different inventory scenarios to make sure validation, duplicate detection, low-stock handling, and AI-based reorder logic work correctly.
+
 ### Existing SKU Test
+
 The request using `TEST-VALID-001` was correctly identified as a duplicate and returned **409 Conflict**.
 
-![Existing SKU](screenshots/duplicate-existing-sku.png)
+![Existing SKU Test](screenshots/Screenshot%202026-08-29%20225911(1).png)
+
+---
 
 ### Low Stock / AI Test
-A product with stock quantity `2` was used to exercise the low-stock AI path.
 
-![Low Stock AI](screenshots/low-stock-ai-test.png)
+A product with stock quantity `2` was used to trigger the low-stock AI path.
 
-### Negative Stock
-A stock quantity of `-4` was rejected with **400 Bad Request**.
+![Low Stock AI Test](screenshots/Screenshot%202026-08-29%20225926(1).png)
 
-![Negative Stock](screenshots/negative-stock.png)
+---
 
-### Zero Price
-A product with price `0` was rejected with **400 Bad Request**.
+### Negative Stock Test
 
-![Zero Price](screenshots/zero-price.png)
+A product with stock quantity `-4` was correctly rejected with **400 Bad Request**.
 
-### Missing SKU
-An empty SKU was rejected because SKU is required.
+![Negative Stock Test](screenshots/Screenshot%202026-08-29%20225937(1).png)
 
-![Missing SKU](screenshots/missing-sku.png)
+---
 
-### Optional Size / Repeated SKU
-The workflow supports missing size by storing `N/A`. This screenshot is from a later request using the same test SKU, so the repeated SKU is correctly returned as a duplicate.
+### Zero Price Test
 
-![Optional Size Test](screenshots/optional-size-duplicate.png)
+A product with price `0` was correctly rejected with **400 Bad Request**.
 
-### Duplicate Product
-Another request using `TEST-VALID-001` was correctly blocked with **409 Conflict**.
+![Zero Price Test](screenshots/Screenshot%202026-08-29%20225947(1).png)
 
-![Duplicate Product](screenshots/duplicate-product.png)
+---
 
-## AI Agent
+### Missing SKU Test
 
-The low-stock trigger is rule-based (`stock_quantity <= 5`). Once triggered, the AI Agent analyzes the situation, assigns urgency, recommends a reorder quantity, provides a short reason, and uses its connected Google Sheets tool to record the recommendation.
+A request with an empty SKU was rejected because SKU is a required field.
+
+![Missing SKU Test](screenshots/Screenshot%202026-08-29%20225957(1).png)
+
+---
+
+### Optional Size / Repeated SKU Test
+
+The workflow supports an optional size field. This later request used an SKU that was already stored, so the workflow correctly returned **409 Conflict** for the repeated SKU.
+
+![Optional Size Test](screenshots/Screenshot%202026-08-29%20230007(1).png)
+
+---
+
+### Duplicate Product Test
+
+Another product using `TEST-VALID-001` was correctly detected as a duplicate and returned **409 Conflict**.
+
+![Duplicate Product Test](screenshots/Screenshot%202026-08-29%20230018(1).png)
+
+---
 
 ## Google Sheets Results
 
 ### Main Inventory Sheet
-Validated inventory records are stored with item name, SKU, category, size, price, stock quantity, supplier, stock status, and timestamp. The sheet also demonstrates the `N/A` fallback for a missing size.
 
-![Inventory Sheet](screenshots/inventory-sheet.png)
+Validated products are stored in the main inventory sheet with item name, SKU, category, size, price, stock quantity, supplier, stock status, and timestamp.
+
+The sheet also shows the `N/A` fallback used when an optional size is missing.
+
+![Main Inventory Sheet](screenshots/Screenshot%202026-08-29%20230151(1).png)
+
+---
 
 ### AI Reorder Alerts
-The `Reorder_Alerts` sheet stores AI-assisted low-stock decisions including SKU, item name, current stock, urgency, recommended reorder quantity, supplier, reason, and timestamp.
 
-![Reorder Alerts](screenshots/reorder-alerts.png)
+Low-stock recommendations generated through the AI workflow are stored in the `Reorder_Alerts` sheet.
+
+The sheet contains SKU, item name, current stock, urgency, recommended reorder quantity, supplier, reason, and timestamp.
+
+![AI Reorder Alerts](screenshots/Screenshot%202026-08-29%20230212(1).png)
+
+---
+
+## AI Agent
+
+The low-stock trigger is rule-based (`stock_quantity <= 5`). Once triggered, the AI Agent analyzes the situation, assigns urgency, recommends a reorder quantity, provides a short reason, and uses its connected Google Sheets tool to record the recommendation.
 
 ## Rule-Based Logic vs AI
 
