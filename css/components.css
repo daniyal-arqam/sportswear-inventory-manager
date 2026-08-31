@@ -283,31 +283,24 @@
 }
 
 .cat-icon {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-sm);
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.22);
   color: var(--accent-secondary);
-  transition: all var(--transition-fast);
 }
 
 .cat-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: block;
 }
 
 .custom-option:hover .cat-icon,
 .custom-option.selected .cat-icon {
   color: var(--accent-primary);
-  background: rgba(204, 255, 0, 0.1);
-  border-color: rgba(204, 255, 0, 0.35);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
 }
 
 .custom-option:hover, .custom-option.selected {
@@ -437,13 +430,28 @@
 
 /* CATEGORY TAG */
 .category-tag {
-  display: inline-block;
-  padding: 3px 10px;
-  background: var(--bg-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--accent-secondary-subtle);
+  color: var(--accent-secondary);
+  border: 1px solid var(--accent-secondary-border);
+}
+
+.category-tag-with-icon .cat-icon-inline {
+  width: 14px;
+  height: 14px;
+}
+
+.category-tag-with-icon .cat-icon-inline svg {
+  width: 12px;
+  height: 12px;
 }
 
 /* PROGRESS BARS */
@@ -839,9 +847,38 @@
   content: '\2193';
 }
 
+.product-avatar-icon,
+.ai-product-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 240, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-secondary);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  flex-shrink: 0;
+}
+
 .product-avatar-icon svg,
 .ai-product-icon svg {
   width: 18px;
   height: 18px;
   display: block;
+}
+
+.filter-chip .cat-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-secondary);
+}
+
+.filter-chip .cat-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.filter-chip.active .cat-icon {
+  color: var(--accent-primary);
 }

@@ -7,22 +7,25 @@ const AddProductController = {
   selectedCategory: 'Footwear',
 
   init() {
-    this.initCategoryIcons();
+    this.renderCategoryOptions();
     this.bindCustomDropdown();
     this.bindFormValidation();
     this.bindPresetButtons();
     this.bindFormSubmit();
   },
 
-  initCategoryIcons() {
-    if (!window.CategoryIcons) return;
-    document.querySelectorAll('.custom-option[data-value]').forEach(opt => {
-      const cat = opt.getAttribute('data-value');
-      const iconWrap = opt.querySelector('.cat-icon');
-      if (iconWrap) iconWrap.innerHTML = CategoryIcons.get(cat);
-    });
-    const selectedIcon = document.getElementById('selected-category-icon');
-    if (selectedIcon) selectedIcon.innerHTML = CategoryIcons.get(this.selectedCategory);
+  renderCategoryOptions() {
+    const optionsContainer = document.querySelector('#category-select-wrapper .custom-select-options');
+    if (!optionsContainer || !window.CategoryIcons) return;
+
+    optionsContainer.innerHTML = CategoryIcons.categories.map((cat, index) => `
+      <div class="custom-option${index === 0 ? ' selected' : ''}" data-value="${cat}">
+        ${CategoryIcons.wrap(cat)}
+        <span>${cat}</span>
+      </div>
+    `).join('');
+
+    CategoryIcons.setSelectedIcon(this.selectedCategory);
   },
 
   bindCustomDropdown() {
@@ -51,6 +54,9 @@ const AddProductController = {
         const iconEl = document.getElementById('selected-category-icon');
         if (iconEl && window.CategoryIcons) {
           iconEl.innerHTML = CategoryIcons.get(value);
+        } else if (iconEl) {
+          const optIcon = opt.querySelector('.cat-icon');
+          if (optIcon) iconEl.innerHTML = optIcon.innerHTML;
         }
         options.forEach(o => o.classList.remove('selected'));
         opt.classList.add('selected');
@@ -222,8 +228,7 @@ const AddProductController = {
 
     this.selectedCategory = data.category;
     document.getElementById('selected-category-text').textContent = data.category;
-    const iconEl = document.getElementById('selected-category-icon');
-    if (iconEl && window.CategoryIcons) iconEl.innerHTML = CategoryIcons.get(data.category);
+    if (window.CategoryIcons) CategoryIcons.setSelectedIcon(data.category);
     document.querySelectorAll('.custom-option').forEach(opt => {
       if (opt.getAttribute('data-value') === data.category) opt.classList.add('selected');
       else opt.classList.remove('selected');

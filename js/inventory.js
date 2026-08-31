@@ -9,11 +9,23 @@ const InventoryController = {
   searchQuery: '',
 
   init() {
+    this.decorateCategoryChips();
     this.bindFilters();
     this.bindSearch();
     this.bindSort();
     this.bindTableActions();
     this.render();
+  },
+
+  decorateCategoryChips() {
+    if (!window.CategoryIcons) return;
+    document.querySelectorAll('.inventory-cat-chip[data-category]').forEach(chip => {
+      const category = chip.getAttribute('data-category');
+      if (category === 'ALL') return;
+      const countEl = chip.querySelector('.chip-count');
+      const countHtml = countEl ? countEl.outerHTML : '';
+      chip.innerHTML = `${CategoryIcons.wrap(category, 'cat-icon')}${category} ${countHtml}`;
+    });
   },
 
   bindFilters() {
@@ -201,7 +213,7 @@ const InventoryController = {
             </div>
           </td>
           <td><span class="sku-badge">${this.escapeHtml(p.sku)}</span></td>
-          <td><span class="category-tag">${this.escapeHtml(p.category)}</span></td>
+          <td><span class="category-tag category-tag-with-icon">${window.CategoryIcons ? CategoryIcons.wrap(p.category, 'cat-icon cat-icon-inline') : ''}<span>${this.escapeHtml(p.category)}</span></span></td>
           <td><span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">${p.size !== 'N/A' ? this.escapeHtml(p.size) : '-'}</span></td>
           <td><span style="font-family: var(--font-mono); font-weight: 700;">${currency}${p.price.toLocaleString()}</span></td>
           <td>

@@ -157,7 +157,7 @@ const DashboardController = {
             </div>
           </td>
           <td><span class="sku-badge">${this.escapeHtml(p.sku)}</span></td>
-          <td><span class="category-tag">${this.escapeHtml(p.category)}</span></td>
+          <td><span class="category-tag category-tag-with-icon">${window.CategoryIcons ? CategoryIcons.wrap(p.category, 'cat-icon cat-icon-inline') : ''}<span>${this.escapeHtml(p.category)}</span></span></td>
           <td><strong style="font-family: var(--font-mono);">${p.stock}</strong></td>
           <td><span style="font-family: var(--font-mono); font-weight: 600;">${currency}${p.price.toLocaleString()}</span></td>
           <td><span class="status-pill ${statusClass}">${status}</span></td>
