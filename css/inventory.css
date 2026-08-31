@@ -1,0 +1,436 @@
+/* Page 03 - Inventory Explorer Styles */
+
+.inventory-header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+/* FILTER & SEARCH TOOLBAR */
+.inventory-toolbar {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-box-wrapper {
+  flex: 1;
+  min-width: 280px;
+  max-width: 480px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-box-wrapper:focus-within {
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.search-icon svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+}
+
+.search-box-wrapper:focus-within .search-icon svg {
+  stroke: var(--accent-primary);
+  transform: scale(1.15) rotate(-5deg);
+  filter: drop-shadow(0 0 6px var(--accent-primary));
+}
+
+.search-input {
+  width: 100%;
+  padding: 11px 16px 11px 44px;
+  background: var(--surface-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
+  outline: none;
+  background: var(--surface-card);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.22), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  width: 22px;
+  height: 22px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.search-clear-btn:hover {
+  background: var(--status-critical);
+  color: #FFFFFF;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.search-clear-btn.visible {
+  display: flex;
+}
+
+.toolbar-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-select-wrapper {
+  min-width: 170px;
+}
+
+/* FILTER CHIP TABS */
+.filter-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filter-label-prefix {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--surface-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.filter-chip:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+  transform: translateY(-1px);
+}
+
+.filter-chip:active {
+  transform: translateY(0);
+}
+
+.filter-chip.active {
+  background: var(--accent-primary-subtle);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary-border);
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.15);
+}
+
+.chip-count {
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  font-family: var(--font-mono);
+  transition: all var(--transition-fast);
+}
+
+.filter-chip.active .chip-count {
+  background: var(--accent-primary);
+  color: #0B0E14;
+}
+
+/* INVENTORY DATA TABLE */
+.inventory-table-container {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-normal);
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.inventory-table th {
+  padding: 14px 18px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.inventory-table td {
+  padding: 16px 18px;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.inventory-table tbody tr {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  position: relative;
+}
+
+.inventory-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.035);
+}
+
+/* Row Alerts */
+.inventory-table tbody tr.row-low-stock {
+  background: rgba(245, 158, 11, 0.025);
+}
+.inventory-table tbody tr.row-low-stock:hover {
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.inventory-table tbody tr.row-critical {
+  background: rgba(239, 68, 68, 0.035);
+}
+.inventory-table tbody tr.row-critical:hover {
+  background: rgba(239, 68, 68, 0.065);
+}
+
+/* Table Stock Metric Cell */
+.inventory-table tbody tr {
+  transition: background-color var(--transition-fast), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  position: relative;
+}
+
+.inventory-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .inventory-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* TABLE ACTION BUTTONS */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.action-btn svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.2s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.action-btn.edit-btn:hover {
+  background: rgba(0, 240, 255, 0.14);
+  border-color: rgba(0, 240, 255, 0.5);
+  color: var(--accent-secondary);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+}
+
+.action-btn.ai-btn:hover {
+  background: rgba(204, 255, 0, 0.18);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: var(--accent-glow);
+}
+
+.action-btn.ai-btn:hover svg {
+  transform: rotate(10deg) scale(1.15);
+}
+
+.action-btn.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: var(--status-critical);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+}
+
+.stock-metric-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 120px;
+}
+
+.stock-num-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.stock-num {
+  font-family: var(--font-mono);
+}
+
+/* Table Actions */
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-table-action {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-table-action:hover {
+  border-color: var(--accent-primary-border);
+  color: var(--accent-primary);
+  background: var(--accent-primary-subtle);
+}
+
+.btn-table-action.action-delete:hover {
+  border-color: var(--status-critical-border);
+  color: var(--status-critical);
+  background: var(--status-critical-subtle);
+}
+
+.btn-table-action svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* TABLE FOOTER / STATS */
+.table-footer {
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* EMPTY STATE */
+.empty-state-card {
+  padding: 64px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px dashed var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.empty-state-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.empty-state-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.empty-state-sub {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  max-width: 380px;
+  margin-bottom: 24px;
+}

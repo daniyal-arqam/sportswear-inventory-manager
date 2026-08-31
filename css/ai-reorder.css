@@ -1,0 +1,452 @@
+/* Page 04 - AI Reorder Center Styles */
+
+.ai-header-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 20px;
+}
+
+.ai-agent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--accent-primary-subtle);
+  border: 1px solid var(--accent-primary-border);
+  color: var(--accent-primary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  box-shadow: var(--accent-glow-sm);
+}
+
+.ai-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
+  animation: badgePulse 1.5s infinite;
+}
+
+/* AI METRICS SUMMARY */
+.ai-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.ai-summary-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all var(--transition-normal);
+}
+
+.ai-summary-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.ai-summary-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ai-summary-icon.critical {
+  background: var(--status-critical-subtle);
+  color: var(--status-critical);
+  border: 1px solid var(--status-critical-border);
+}
+
+.ai-summary-icon.high {
+  background: rgba(249, 115, 22, 0.12);
+  color: #F97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.ai-summary-icon.units {
+  background: var(--accent-primary-subtle);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary-border);
+}
+
+.ai-summary-icon.analyzed {
+  background: var(--accent-secondary-subtle);
+  color: var(--accent-secondary);
+  border: 1px solid var(--accent-secondary-border);
+}
+
+.ai-summary-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ai-summary-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-summary-val {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.ai-summary-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* URGENCY FILTER BAR */
+.ai-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.urgency-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.urgency-filter-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.urgency-filter-btn:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+}
+
+.urgency-filter-btn.active {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.urgency-filter-btn.active[data-urgency="critical"] {
+  border-color: var(--status-critical);
+  color: var(--status-critical);
+  background: var(--status-critical-subtle);
+}
+
+.urgency-filter-btn.active[data-urgency="high"] {
+  border-color: #F97316;
+  color: #F97316;
+  background: rgba(249, 115, 22, 0.12);
+}
+
+/* AI RECOMMENDATION CARDS GRID */
+.ai-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.ai-reorder-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ai-reorder-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Urgency Card Borders */
+.ai-reorder-card.urgency-critical {
+  border-color: var(--status-critical-border);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.12);
+}
+.ai-reorder-card.urgency-critical::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--status-critical);
+}
+
+.ai-reorder-card.urgency-high {
+  border-color: rgba(249, 115, 22, 0.35);
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
+}
+.ai-reorder-card.urgency-high::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #F97316;
+}
+
+.ai-reorder-card.urgency-medium {
+  border-color: rgba(234, 179, 8, 0.35);
+}
+.ai-reorder-card.urgency-medium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #EAB308;
+}
+
+.ai-reorder-card.urgency-low {
+  border-color: var(--status-success-border);
+}
+.ai-reorder-card.urgency-low::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--status-success);
+}
+
+/* Card Header */
+.ai-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ai-product-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-product-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+}
+
+.ai-product-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ai-product-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ai-product-sku-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* Urgency Badges */
+.urgency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.urgency-badge.critical {
+  background: var(--status-critical-subtle);
+  color: var(--status-critical);
+  border: 1px solid var(--status-critical-border);
+}
+
+.urgency-badge.high {
+  background: rgba(249, 115, 22, 0.12);
+  color: #F97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.urgency-badge.medium {
+  background: rgba(234, 179, 8, 0.12);
+  color: #EAB308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.urgency-badge.low {
+  background: var(--status-success-subtle);
+  color: var(--status-success);
+  border: 1px solid var(--status-success-border);
+}
+
+/* Card Numbers Grid */
+.ai-numbers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  background: var(--surface-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.ai-num-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-num-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ai-num-val {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.ai-num-val.recommended {
+  color: var(--accent-primary);
+}
+
+.ai-num-val.supplier {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* AI Reason Box */
+.ai-reason-box {
+  background: rgba(20, 27, 40, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+
+.ai-reason-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.ai-reason-header svg {
+  width: 14px;
+  height: 14px;
+}
+
+.ai-reason-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Card Action Button */
+.btn-review-rec {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-normal);
+  user-select: none;
+}
+
+.btn-review-rec:hover {
+  background: var(--accent-primary);
+  color: #0B0E14;
+  border-color: var(--accent-primary);
+  box-shadow: var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.btn-review-rec:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-review-rec svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.btn-review-rec:hover svg {
+  transform: translateX(5px);
+}

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-Powered Sportswear Inventory Manager with n8n Automation, Google Sheets, and Groq AI Agent">
+  <title>Sportswear Inventory Manager | AI & Sports Tech Dashboard</title>
+
+  <!-- Google Fonts: Outfit, Plus Jakarta Sans, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/add-product.css">
+  <link rel="stylesheet" href="css/inventory.css">
+  <link rel="stylesheet" href="css/ai-reorder.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Mobile Sidebar Backdrop -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <!-- Athletic Kinetic Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+        </div>
+        <div class="brand-title">
+          <div class="brand-name">KINETIC <span>SPORT</span></div>
+          <div class="brand-tag">Inventory Manager</div>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Operations</div>
+        
+        <a href="#dashboard" class="nav-item active" data-view="dashboard" id="nav-dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="7" height="9" rx="1.5" />
+            <rect x="14" y="3" width="7" height="5" rx="1.5" />
+            <rect x="14" y="12" width="7" height="9" rx="1.5" />
+            <rect x="3" y="16" width="7" height="5" rx="1.5" />
+          </svg>
+          <span class="nav-item-text">Dashboard</span>
+        </a>
+
+        <a href="#add-product" class="nav-item" data-view="add-product" id="nav-add-product">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="9" />
+            <line x1="12" y1="8" x2="12" y2="16" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+          </svg>
+          <span class="nav-item-text">Add Product</span>
+        </a>
+
+        <a href="#inventory" class="nav-item" data-view="inventory" id="nav-inventory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="m3.3 7 8.7 5 8.7-5" />
+            <path d="M12 22V12" />
+          </svg>
+          <span class="nav-item-text">Inventory</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 14px;">Intelligence</div>
+
+        <a href="#ai-reorder" class="nav-item" data-view="ai-reorder" id="nav-ai-reorder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+          </svg>
+          <span class="nav-item-text">AI Reorder Alerts</span>
+          <span class="nav-badge pulse" id="sidebar-ai-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span>4</span>
+          </span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer (n8n Connection Status) -->
+      <div class="sidebar-footer">
+        <div class="automation-status-card" id="automation-status-trigger" title="Click to view n8n workflow pipeline">
+          <div class="status-indicator-wrap">
+            <div class="pulse-dot"></div>
+            <div class="status-info">
+              <span class="status-title">n8n Automation</span>
+              <span class="status-sub" id="sidebar-n8n-status-text">Workflow Connected</span>
+            </div>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--text-muted);">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle Sidebar Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px;">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <div class="header-breadcrumbs">
+            <span>Sportswear</span>
+            <span>/</span>
+            <span class="current" id="header-current-view">Dashboard Overview</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Realtime Live Clock -->
+          <div class="live-clock-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="live-clock-text">--:--:-- UTC</span>
+          </div>
+
+          <!-- Dark / Light Mode Switcher -->
+          <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile-pill" onclick="window.App.openModal('modal-n8n-workflow')">
+            <div class="user-avatar">DA</div>
+            <span class="user-name">Daniyal Arqam</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ========================================== -->
+      <!-- PAGE 01: DASHBOARD (COMMAND CENTER)        -->
+      <!-- ========================================== -->
+      <main class="page-view active" id="view-dashboard">
+        <div class="dashboard-header-section">
+          <div>
+            <div class="dashboard-greeting">Good morning â¢ Operations Live</div>
+            <h1 class="dashboard-main-title">Inventory Overview</h1>
+            <p class="dashboard-subtext">Monitor inventory health and AI-powered reorder decisions.</p>
+          </div>
+          <button class="btn btn-primary" id="dashboard-quick-add">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Product</span>
+          </button>
+        </div>
+
+        <!-- 4 KPI CARDS (INTERACTIVE & CLICKABLE) -->
+        <div class="kpi-grid">
+          <!-- 01: Total Products -->
+          <div class="kpi-card tilt-interactive" id="kpi-card-total" title="Click to view all inventory products">
+            <div class="kpi-card-header">
+              <span class="kpi-label">01 Total Products</span>
+              <div class="kpi-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-metric" id="kpi-total-products">8</span>
+              <span class="kpi-trend positive">â Active</span>
+            </div>
+            <div class="kpi-footer-action">
+              <span>Google Sheets (Sheet1) Synced</span>
+              <span class="kpi-click-hint">View All &rarr;</span>
+            </div>
+          </div>
+
+          <!-- 02: In Stock -->
+          <div class="kpi-card tilt-interactive" id="kpi-card-instock" title="Click to filter In Stock items">
+            <div class="kpi-card-header">
+              <span class="kpi-label">02 In Stock</span>
+              <div class="kpi-icon-badge" style="color: var(--status-success);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-metric" id="kpi-in-stock">4</span>
+              <span class="kpi-trend positive">Healthy (&gt; 5)</span>
+            </div>
+            <div class="kpi-footer-action">
+              <span>Above safety minimum</span>
+              <span class="kpi-click-hint">Filter Healthy &rarr;</span>
+            </div>
+          </div>
+
+          <!-- 03: Low Stock -->
+          <div class="kpi-card kpi-low-stock tilt-interactive" id="kpi-card-lowstock" title="Click to filter Low Stock items">
+            <div class="kpi-card-header">
+              <span class="kpi-label">03 Low Stock</span>
+              <div class="kpi-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-metric" id="kpi-low-stock">4</span>
+              <span class="kpi-trend warning">Stock &le; 5</span>
+            </div>
+            <div class="kpi-footer-action">
+              <span>Triggers Groq AI Agent</span>
+              <span class="kpi-click-hint" style="color: var(--status-warning);">Review &rarr;</span>
+            </div>
+          </div>
+
+          <!-- 04: AI Reorder Alerts -->
+          <div class="kpi-card kpi-ai-alerts tilt-interactive" id="kpi-card-aialerts" title="Click to open AI Reorder Center">
+            <div class="kpi-card-header">
+              <span class="kpi-label">04 AI Reorder Alerts</span>
+              <div class="kpi-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-metric" id="kpi-ai-alerts">4</span>
+              <span class="kpi-trend alert">In Reorder_Alerts</span>
+            </div>
+            <div class="kpi-footer-action">
+              <span>Groq Tool-assisted</span>
+              <span class="kpi-click-hint" style="color: var(--accent-primary);">Open AI Hub &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI INVENTORY INSIGHT BANNER -->
+        <div class="ai-insight-card">
+          <div class="ai-insight-left">
+            <div class="ai-sparkle-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <div>
+              <div class="ai-insight-title">
+                Groq AI Inventory Insight
+                <span class="ai-badge-pulse">AUTONOMOUS AUDIT</span>
+              </div>
+              <p class="ai-insight-text" id="ai-insight-text">
+                3 products require immediate attention. Critical stock levels (stock &le; 5) detected in Training Accessories and Apparel.
+              </p>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="dashboard-ai-cta">
+            View AI Recommendations â
+          </button>
+        </div>
+
+        <!-- CHARTS SECTION -->
+        <div class="charts-grid">
+          <!-- Inventory Health Radial / Donut -->
+          <div class="card chart-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
+                  Inventory Health
+                </h3>
+                <div class="card-subtitle">Real-time stock ratio distribution</div>
+              </div>
+            </div>
+            <div class="chart-container-relative">
+              <canvas id="health-donut-chart"></canvas>
+            </div>
+            <div class="radial-legend">
+              <div class="legend-item"><span class="legend-dot in-stock"></span> In Stock (&gt; 5)</div>
+              <div class="legend-item"><span class="legend-dot low-stock"></span> Low Stock (3-5)</div>
+              <div class="legend-item"><span class="legend-dot critical"></span> Critical (0-2)</div>
+            </div>
+          </div>
+
+          <!-- Stock Overview Category Bar Chart -->
+          <div class="card chart-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2" style="width:20px;height:20px;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                  Stock Overview
+                </h3>
+                <div class="card-subtitle">SKU quantity distribution by product category</div>
+              </div>
+            </div>
+            <div class="chart-container-relative">
+              <canvas id="category-bar-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT INVENTORY TABLE -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Recent Inventory</h3>
+              <div class="card-subtitle">Latest active sportswear product entries synced with Google Sheets</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.App.navigateTo('inventory')">
+              View All Inventory â
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Category</th>
+                  <th>Stock</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recent-inventory-tbody">
+                <!-- Dynamically Populated by DashboardController -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- ========================================== -->
+      <!-- PAGE 02: ADD PRODUCT & AUTOMATION PIPELINE -->
+      <!-- ========================================== -->
+      <section class="page-view" id="view-add-product">
+        <div class="add-product-container">
+          <div class="dashboard-header-section">
+            <div>
+              <h1 class="dashboard-main-title">Add Inventory Product</h1>
+              <p class="dashboard-subtext">Add a new item to your automated n8n inventory system.</p>
+            </div>
+          </div>
+
+          <div class="add-product-layout">
+            <!-- Form Card -->
+            <div class="form-card">
+              <form id="add-product-form" novalidate>
+                <!-- Product Name -->
+                <div class="form-group">
+                  <label class="form-label" for="prod-name">
+                    Item Name <span class="required">*</span>
+                  </label>
+                  <input type="text" id="prod-name" class="form-input" placeholder="e.g. Velocity ZoomX Pro Runners" required>
+                  <div class="form-error" id="error-prod-name"></div>
+                </div>
+
+                <!-- SKU & Category Grid -->
+                <div class="form-grid-2col">
+                  <!-- SKU -->
+                  <div class="form-group">
+                    <label class="form-label" for="prod-sku">
+                      SKU <span class="required">*</span>
+                    </label>
+                    <input type="text" id="prod-sku" class="form-input" placeholder="e.g. RUN-001" style="font-family: var(--font-mono); text-transform: uppercase;" required>
+                    <div class="form-error" id="error-prod-sku"></div>
+                  </div>
+
+                  <!-- Category Custom Dropdown -->
+                  <div class="form-group">
+                    <label class="form-label">
+                      Category <span class="required">*</span>
+                    </label>
+                    <div class="custom-select-wrapper" id="category-select-wrapper">
+                      <div class="custom-select-trigger" id="category-select-trigger">
+                        <span id="selected-category-text">Footwear</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </div>
+                      <div class="custom-select-options">
+                        <div class="custom-option selected" data-value="Footwear">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M4 16v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M4 16h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2z"/></svg>
+                          <span>Footwear</span>
+                        </div>
+                        <div class="custom-option" data-value="Apparel">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+                          <span>Apparel</span>
+                        </div>
+                        <div class="custom-option" data-value="Accessories">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                          <span>Accessories</span>
+                        </div>
+                        <div class="custom-option" data-value="Training Gear">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M6 5v14M18 5v14M4 9h4M16 9h4M2 12h20M4 15h4M16 15h4"/></svg>
+                          <span>Training Gear</span>
+                        </div>
+                        <div class="custom-option" data-value="Sports Equipment">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+                          <span>Sports Equipment</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-error" id="error-prod-category"></div>
+                  </div>
+                </div>
+
+                <!-- Size, Price, Stock 3-col Grid -->
+                <div class="form-grid-3col">
+                  <!-- Size (Optional) -->
+                  <div class="form-group">
+                    <label class="form-label" for="prod-size">
+                      Size <span style="font-size:0.75rem; color:var(--text-muted);">(Optional)</span>
+                    </label>
+                    <input type="text" id="prod-size" class="form-input" placeholder="US 10.5 / M / L">
+                    <div class="form-helper">Optional â N/A will be used if no size is provided.</div>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="form-group">
+                    <label class="form-label" for="prod-price">
+                      Price (Rs.) <span class="required">*</span>
+                    </label>
+                    <input type="number" id="prod-price" class="form-input" placeholder="8500" min="1" step="1" required>
+                    <div class="form-error" id="error-prod-price"></div>
+                  </div>
+
+                  <!-- Stock Quantity -->
+                  <div class="form-group">
+                    <label class="form-label" for="prod-stock">
+                      Stock Quantity <span class="required">*</span>
+                    </label>
+                    <input type="number" id="prod-stock" class="form-input" placeholder="15" min="0" step="1" required>
+                    <div class="form-error" id="error-prod-stock"></div>
+                  </div>
+                </div>
+
+                <!-- Supplier -->
+                <div class="form-group">
+                  <label class="form-label" for="prod-supplier">
+                    Supplier Name <span class="required">*</span>
+                  </label>
+                  <input type="text" id="prod-supplier" class="form-input" placeholder="e.g. Nike Global Logistics" required>
+                  <div class="form-error" id="error-prod-supplier"></div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions-row">
+                  <button type="reset" class="btn btn-ghost">Reset Form</button>
+                  <button type="submit" class="btn-submit-product" id="btn-submit-inventory">
+                    <span class="spinner" id="btn-submit-spinner" style="display: none;"></span>
+                    <span id="btn-submit-text">Add to Inventory</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Automation Pipeline Side Card -->
+            <div class="pipeline-card">
+              <div class="pipeline-header">
+                <h3 class="card-title" style="font-size: 1.05rem;">n8n Workflow Execution</h3>
+                <span class="pipeline-badge">
+                  <span class="pulse-dot" style="width:6px;height:6px;"></span>
+                  POST /Inventory
+                </span>
+              </div>
+
+              <!-- Stepper -->
+              <div class="pipeline-steps">
+                <div class="pipeline-step" id="pipeline-step-1">
+                  <div class="step-node">1</div>
+                  <div class="step-content">
+                    <div class="step-title">Schema & Constraint Validation</div>
+                    <div class="step-desc">n8n 'If' Node: Checks item_name, sku, category, price &gt; 0, stock &ge; 0, supplier</div>
+                  </div>
+                </div>
+
+                <div class="pipeline-step" id="pipeline-step-2">
+                  <div class="step-node">2</div>
+                  <div class="step-content">
+                    <div class="step-title">Low Stock Check & Groq AI Agent</div>
+                    <div class="step-desc">n8n 'Low Stock Check': If stock &le; 5, Groq AI records reorder alert in Google Sheets</div>
+                  </div>
+                </div>
+
+                <div class="pipeline-step" id="pipeline-step-3">
+                  <div class="step-node">3</div>
+                  <div class="step-content">
+                    <div class="step-title">Search SKU in Google Sheets</div>
+                    <div class="step-desc">n8n 'Get row(s) in sheet': Searches Sheet1 for existing Sku collision</div>
+                  </div>
+                </div>
+
+                <div class="pipeline-step" id="pipeline-step-4">
+                  <div class="step-node">4</div>
+                  <div class="step-content">
+                    <div class="step-title">Duplicate Check & Append Row</div>
+                    <div class="step-desc">Duplicate &rarr; 409 Conflict; Unique &rarr; Appends row in Sheet1 &amp; returns 201 Created</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Feedback Panel -->
+              <div class="automation-feedback-panel" id="automation-feedback-panel" style="display: none;">
+                <div class="feedback-header">
+                  <span id="feedback-icon"></span>
+                  <span id="feedback-title">Product Added Successfully</span>
+                </div>
+                <p class="feedback-desc" id="feedback-desc">
+                  Your product has been validated and added to inventory.
+                </p>
+              </div>
+
+              <!-- Presets for fast testing based on repo documentation -->
+              <div class="simulator-presets">
+                <div class="presets-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Edge-Case Test Presets (From GitHub Repo)
+                </div>
+                <div class="presets-chips">
+                  <button type="button" class="preset-chip" id="preset-standard">Standard In-Stock (28)</button>
+                  <button type="button" class="preset-chip" id="preset-low-stock">Low Stock &le; 5 + Groq AI Trigger (2)</button>
+                  <button type="button" class="preset-chip" id="preset-duplicate">Duplicate SKU (TEST-VALID-001) &rarr; 409</button>
+                  <button type="button" class="preset-chip" id="preset-invalid">Negative Stock / Zero Price &rarr; 400</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- PAGE 03: INVENTORY EXPLORER & TABLE        -->
+      <!-- ========================================== -->
+      <section class="page-view" id="view-inventory">
+        <div class="inventory-header-section">
+          <div>
+            <h1 class="dashboard-main-title">Inventory</h1>
+            <p class="dashboard-subtext">Manage and monitor your complete sportswear inventory.</p>
+          </div>
+          <button class="btn btn-primary" id="inventory-add-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Product</span>
+          </button>
+        </div>
+
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <div class="inventory-toolbar">
+          <div class="toolbar-top-row">
+            <!-- Search -->
+            <div class="search-box-wrapper">
+              <div class="search-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <input type="text" id="inventory-search" class="search-input" placeholder="Search by Item Name, SKU, or Supplier...">
+              <button class="search-clear-btn" id="search-clear-btn" title="Clear Search">&times;</button>
+            </div>
+
+            <!-- Sort Controls & Status Filter -->
+            <div class="toolbar-controls-right">
+              <!-- Stock Status Filter Chips -->
+              <div style="display: flex; gap: 6px;">
+                <button class="filter-chip inventory-status-chip active" data-status="ALL">All Status</button>
+                <button class="filter-chip inventory-status-chip" data-status="IN STOCK">In Stock (&gt; 5)</button>
+                <button class="filter-chip inventory-status-chip" data-status="LOW STOCK">Low Stock (3-5)</button>
+                <button class="filter-chip inventory-status-chip" data-status="CRITICAL">Critical (0-2)</button>
+              </div>
+
+              <!-- Sort Select -->
+              <div class="sort-select-wrapper">
+                <select id="inventory-sort-select" class="form-select" style="padding: 8px 12px; font-size: 0.82rem;">
+                  <option value="name_asc">Sort: Name (A-Z)</option>
+                  <option value="stock_asc">Sort: Stock (Lowest First)</option>
+                  <option value="stock_desc">Sort: Stock (Highest First)</option>
+                  <option value="price_desc">Sort: Price (High to Low)</option>
+                  <option value="price_asc">Sort: Price (Low to High)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div class="filter-pills-row">
+            <span class="filter-label-prefix">Category:</span>
+            <button class="filter-chip inventory-cat-chip active" data-category="ALL">
+              All Categories <span class="chip-count" id="cat-count-all">8</span>
+            </button>
+            <button class="filter-chip inventory-cat-chip" data-category="Footwear">
+              Footwear <span class="chip-count" id="cat-count-footwear">2</span>
+            </button>
+            <button class="filter-chip inventory-cat-chip" data-category="Apparel">
+              Apparel <span class="chip-count" id="cat-count-apparel">2</span>
+            </button>
+            <button class="filter-chip inventory-cat-chip" data-category="Accessories">
+              Accessories <span class="chip-count" id="cat-count-accessories">2</span>
+            </button>
+            <button class="filter-chip inventory-cat-chip" data-category="Training Gear">
+              Training Gear <span class="chip-count" id="cat-count-training-gear">1</span>
+            </button>
+            <button class="filter-chip inventory-cat-chip" data-category="Sports Equipment">
+              Sports Equipment <span class="chip-count" id="cat-count-sports-equipment">1</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- INVENTORY TABLE CONTAINER -->
+        <div class="inventory-table-container" id="inventory-table-wrap">
+          <div class="table-responsive">
+            <table class="inventory-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Category</th>
+                  <th>Size</th>
+                  <th>Price</th>
+                  <th>Stock Buffer</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-tbody">
+                <!-- Dynamically populated by InventoryController -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="inventory-showing-count">Showing 8 of 8 items</span>
+            <span style="font-family: var(--font-mono); font-size: 0.76rem;">â Auto-synced with Google Sheet "Sportswear Inventory" (Sheet1)</span>
+          </div>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div class="card empty-state-card" id="inventory-empty-state" style="display: none;">
+          <div class="empty-state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+          </div>
+          <h3 class="empty-state-title">No inventory products found</h3>
+          <p class="empty-state-sub">No matching products found with current filter/search criteria.</p>
+          <button class="btn btn-primary" onclick="window.App.navigateTo('add-product')">
+            Add First Product
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- PAGE 04: AI REORDER CENTER (FLAGSHIP)      -->
+      <!-- ========================================== -->
+      <section class="page-view" id="view-ai-reorder">
+        <div class="ai-header-section">
+          <div>
+            <div class="ai-agent-badge">
+              <span class="ai-pulse-dot"></span>
+              GROQ AI AGENT ACTIVE &bull; GOOGLE SHEETS "REORDER_ALERTS"
+            </div>
+            <h1 class="dashboard-main-title">AI Reorder Center</h1>
+            <p class="dashboard-subtext">AI-powered stock analysis and intelligent replenishment recommendations.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-run-ai-audit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span>Run Instant AI Audit</span>
+          </button>
+        </div>
+
+        <!-- AI SUMMARY METRICS CARDS -->
+        <div class="ai-summary-grid">
+          <!-- Critical Alerts -->
+          <div class="ai-summary-card">
+            <div class="ai-summary-icon critical">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="ai-summary-data">
+              <span class="ai-summary-val" id="ai-stat-critical" style="color: var(--status-critical);">2</span>
+              <span class="ai-summary-label">Critical Alerts (Stock 0-2)</span>
+            </div>
+          </div>
+
+          <!-- High Priority -->
+          <div class="ai-summary-card">
+            <div class="ai-summary-icon high">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="ai-summary-data">
+              <span class="ai-summary-val" id="ai-stat-high" style="color: #F97316;">2</span>
+              <span class="ai-summary-label">High Priority (Stock 3-5)</span>
+            </div>
+          </div>
+
+          <!-- Recommended Units -->
+          <div class="ai-summary-card">
+            <div class="ai-summary-icon units">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              </svg>
+            </div>
+            <div class="ai-summary-data">
+              <span class="ai-summary-val" id="ai-stat-units" style="color: var(--accent-primary);">68</span>
+              <span class="ai-summary-label">Recommended Units</span>
+            </div>
+          </div>
+
+          <!-- Products Analyzed -->
+          <div class="ai-summary-card">
+            <div class="ai-summary-icon analyzed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <div class="ai-summary-data">
+              <span class="ai-summary-val" id="ai-stat-analyzed">8</span>
+              <span class="ai-summary-label">Products Analyzed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- URGENCY FILTER BAR -->
+        <div class="ai-filter-bar">
+          <div class="urgency-filter-group">
+            <span class="filter-label-prefix">Filter Urgency:</span>
+            <button class="urgency-filter-btn active" data-urgency="ALL">All Alerts</button>
+            <button class="urgency-filter-btn" data-urgency="critical">Critical (0-2)</button>
+            <button class="urgency-filter-btn" data-urgency="high">High (3-5)</button>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="width:14px;height:14px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Groq AI Agent synced with Google Sheets "Reorder_Alerts"
+          </div>
+        </div>
+
+        <!-- REORDER RECOMMENDATION CARDS GRID -->
+        <div class="ai-cards-grid" id="ai-cards-grid">
+          <!-- Dynamically Populated by AiReorderController -->
+        </div>
+
+        <!-- Empty state when all stock is healthy -->
+        <div class="card empty-state-card" id="ai-empty-state" style="display: none;">
+          <div class="empty-state-icon" style="border-color: var(--status-success); color: var(--status-success);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3 class="empty-state-title">No Urgent Reorder Alerts</h3>
+          <p class="empty-state-sub">All product stock quantities are currently within optimal operating thresholds (&gt; 5 units).</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: N8N AUTOMATION PIPELINE CONSOLE     -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-n8n-workflow">
+    <div class="modal-container n8n-console-modal" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="width:22px;height:22px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          n8n Workflow Architecture Console
+        </h3>
+        <button class="modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Live Endpoint Configuration -->
+        <div class="n8n-endpoint-config">
+          <div class="n8n-endpoint-header">
+            <strong>n8n Webhook Endpoint Settings</strong>
+            <span class="n8n-status-live">
+              <span class="n8n-live-dot"></span>
+              Active
+            </span>
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label" style="font-size: 0.72rem;">Configured Webhook URL (POST)</label>
+            <input type="text" id="cfg-n8n-webhook-url" class="form-input n8n-url-input" value="http://localhost:5678/webhook/Inventory">
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">Connected Sheet: <code>Sportswear Inventory (1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE)</code></span>
+            <button class="btn btn-primary btn-sm" id="btn-save-n8n-settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Config
+            </button>
+          </div>
+        </div>
+
+        <p class="n8n-arch-label">
+          Exact Node Architecture from <code>Sportswear Inventory Manager.json</code>:
+        </p>
+
+        <!-- Node Pipeline -->
+        <div class="n8n-node-pipeline">
+          <div class="n8n-node-card" data-node="1">
+            <div class="n8n-node-indicator" style="--node-color: var(--accent-secondary);">
+              <span class="n8n-node-num">1</span>
+            </div>
+            <div class="n8n-node-content">
+              <strong class="n8n-node-title">Webhook (POST /Inventory)</strong>
+              <span class="n8n-node-desc">Receives <code>item_name</code>, <code>sku</code>, <code>category</code>, <code>size</code>, <code>price</code>, <code>stock_quantity</code>, <code>supplier</code></span>
+            </div>
+            <span class="n8n-node-badge" style="--badge-color: var(--accent-secondary);">Webhook Node</span>
+          </div>
+
+          <div class="n8n-node-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+
+          <div class="n8n-node-card" data-node="2">
+            <div class="n8n-node-indicator" style="--node-color: var(--status-warning);">
+              <span class="n8n-node-num">2</span>
+            </div>
+            <div class="n8n-node-content">
+              <strong class="n8n-node-title">If Validation Node &rarr; 400 Bad Request</strong>
+              <span class="n8n-node-desc">Validates required fields, price &gt; 0, stock_quantity &ge; 0</span>
+            </div>
+            <span class="n8n-node-badge" style="--badge-color: var(--status-warning);">Strict Rules</span>
+          </div>
+
+          <div class="n8n-node-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+
+          <div class="n8n-node-card" data-node="3">
+            <div class="n8n-node-indicator" style="--node-color: var(--accent-primary);">
+              <span class="n8n-node-num">3</span>
+            </div>
+            <div class="n8n-node-content">
+              <strong class="n8n-node-title">Low Stock Check (&le; 5) &rarr; Groq AI Agent</strong>
+              <span class="n8n-node-desc">Groq model classifies urgency &amp; appends row to <code>Reorder_Alerts</code> Sheet</span>
+            </div>
+            <span class="n8n-node-badge" style="--badge-color: var(--accent-primary);">Groq Agent</span>
+          </div>
+
+          <div class="n8n-node-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+
+          <div class="n8n-node-card" data-node="4">
+            <div class="n8n-node-indicator" style="--node-color: var(--status-success);">
+              <span class="n8n-node-num">4</span>
+            </div>
+            <div class="n8n-node-content">
+              <strong class="n8n-node-title">Google Sheets Search SKU &amp; Duplicate Check</strong>
+              <span class="n8n-node-desc">Searches Sheet1 for Sku &rarr; 409 Conflict if duplicate; Appends row &rarr; 201 Created</span>
+            </div>
+            <span class="n8n-node-badge" style="--badge-color: var(--status-success);">Google Sheets</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Close Console</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: QUICK STOCK ADJUSTMENT              -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-stock-adjust">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Update Stock Level
+        </h3>
+        <button class="modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-stock-prod-id">
+        <div style="margin-bottom: 16px;">
+          <h4 id="modal-stock-prod-name" style="font-family: var(--font-display); font-size: 1.1rem; color: var(--text-primary);">Product Name</h4>
+          <span class="sku-badge" id="modal-stock-sku" style="margin-top: 4px; display: inline-block;">SKU-000</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-stock-input">New Stock Quantity (Units)</label>
+          <input type="number" id="modal-stock-input" class="form-input" min="0" step="1">
+          <div class="form-helper" style="margin-top: 6px;">Setting quantity &le; 5 will automatically activate Groq AI Reorder recommendation.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="modal-stock-save-btn">Save & Update</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PURCHASE ORDER REVIEW & DISPATCH    -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-po-review">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="width:22px;height:22px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Review Purchase Order
+        </h3>
+        <button class="modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-po-prod-id">
+        <div style="margin-bottom: 20px;">
+          <h4 id="modal-po-title" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-primary);">Product Name</h4>
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <span class="sku-badge" id="modal-po-sku">SKU-000</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Current Stock: <strong id="modal-po-current-stock" style="color: var(--status-critical);">0 units</strong></span>
+          </div>
+        </div>
+
+        <div style="background: var(--surface-input); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+            <span style="color: var(--text-muted);">Supplier:</span>
+            <strong id="modal-po-supplier" style="color: var(--text-primary);">Supplier Name</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+            <span style="color: var(--text-muted);">Unit Price:</span>
+            <strong id="modal-po-unit-price" style="font-family: var(--font-mono); color: var(--text-primary);">Rs. 0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            <span style="color: var(--text-secondary); font-weight: 600;">Est. Total PO Cost:</span>
+            <strong id="modal-po-total-cost" style="font-family: var(--font-mono); color: var(--accent-primary); font-size: 1.1rem;">Rs. 0</strong>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-po-units-input">Order Units to Replenish</label>
+          <input type="number" id="modal-po-units-input" class="form-input" min="1" step="1">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="modal-po-approve-btn">Approve & Dispatch PO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Modular Scripts -->
+  <script src="js/state.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/add-product.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/ai-reorder.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

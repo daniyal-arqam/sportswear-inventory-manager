@@ -1,0 +1,134 @@
+/* Responsive Breakpoint Adaptations */
+
+/* Large Desktop / Laptop (<= 1200px) */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ai-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .add-product-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet (<= 992px) */
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+    width: 270px;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 95;
+    display: none;
+  }
+  
+  .sidebar-backdrop.active {
+    display: block;
+  }
+  
+  .main-wrapper {
+    margin-left: 0;
+  }
+  
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .page-view {
+    padding: 20px;
+  }
+  
+  .top-header {
+    padding: 0 20px;
+  }
+}
+
+/* Mobile Devices (<= 640px) */
+@media (max-width: 640px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid-2col, .form-grid-3col {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-numbers-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .ai-num-box:last-child {
+    grid-column: span 2;
+  }
+  
+  .dashboard-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .inventory-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .ai-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .toolbar-top-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box-wrapper {
+    max-width: 100%;
+  }
+  
+  .toolbar-controls-right {
+    justify-content: space-between;
+  }
+  
+  .ai-insight-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: 100%;
+  }
+}
