@@ -144,13 +144,12 @@ const DashboardController = {
     tbody.innerHTML = recentProducts.map(p => {
       const status = window.appStore.getProductStatus(p.stock);
       const statusClass = status === 'IN STOCK' ? 'in-stock' : (status === 'LOW STOCK' ? 'low-stock' : 'critical');
-      const iconSvg = this.getCategoryIconSvg(p.category);
 
       return `
         <tr style="cursor: pointer;" onclick="window.App.navigateTo('inventory')">
           <td>
             <div class="table-product-cell">
-              <div class="product-avatar-icon">${iconSvg}</div>
+              ${window.CategoryIcons ? CategoryIcons.wrapAvatar(p.category) : ''}
               <div class="product-cell-meta">
                 <span class="product-cell-name">${this.escapeHtml(p.name)}</span>
                 <span class="product-cell-sub">${p.size !== 'N/A' ? `Size: ${this.escapeHtml(p.size)}` : 'One Size'}</span>
@@ -168,18 +167,7 @@ const DashboardController = {
   },
 
   getCategoryIconSvg(category) {
-    switch (category) {
-      case 'Footwear':
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M4 16h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2z"/></svg>`;
-      case 'Apparel':
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>`;
-      case 'Training Gear':
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 5v14M18 5v14M4 9h4M16 9h4M2 12h20M4 15h4M16 15h4"/></svg>`;
-      case 'Sports Equipment':
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>`;
-      default:
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
-    }
+    return window.CategoryIcons ? CategoryIcons.get(category) : '';
   },
 
   escapeHtml(str) {

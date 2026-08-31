@@ -272,11 +272,13 @@
   width: 42px;
   height: 42px;
   border-radius: var(--radius-md);
-  background: var(--bg-tertiary);
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-primary);
+  color: var(--accent-secondary);
+  flex-shrink: 0;
 }
 
 .ai-product-icon svg {

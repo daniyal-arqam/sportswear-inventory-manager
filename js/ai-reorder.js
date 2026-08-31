@@ -126,7 +126,6 @@ const AiReorderController = {
     container.innerHTML = products.map(p => {
       const rec = p.aiRecommendation;
       const urgency = rec.urgency || 'medium';
-      const iconSvg = window.DashboardController.getCategoryIconSvg(p.category);
       const estCost = currency + ((rec.recommendedUnits || 10) * p.price).toLocaleString();
 
       return `
@@ -134,7 +133,7 @@ const AiReorderController = {
           <div>
             <div class="ai-card-top">
               <div class="ai-product-heading">
-                <div class="ai-product-icon">${iconSvg}</div>
+                ${window.CategoryIcons ? CategoryIcons.wrapAvatar(p.category, 'ai-product-icon') : ''}
                 <div>
                   <h4 class="ai-product-title">${this.escapeHtml(p.name)}</h4>
                   <div class="ai-product-sku-row">
@@ -144,7 +143,7 @@ const AiReorderController = {
                 </div>
               </div>
               <span class="urgency-badge ${urgency}">
-                â ${urgency.toUpperCase()} URGENCY
+                ${urgency.toUpperCase()} URGENCY
               </span>
             </div>
 

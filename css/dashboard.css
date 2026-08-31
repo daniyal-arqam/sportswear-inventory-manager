@@ -444,13 +444,13 @@
   width: 36px;
   height: 36px;
   border-radius: var(--radius-sm);
-  background: var(--bg-tertiary);
+  background: rgba(0, 240, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent-secondary);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(0, 240, 255, 0.22);
   flex-shrink: 0;
 }
 

@@ -193,6 +193,7 @@ const InventoryController = {
         <tr class="${rowClass}">
           <td>
             <div class="table-product-cell">
+              ${window.CategoryIcons ? CategoryIcons.wrapAvatar(p.category) : ''}
               <div class="product-cell-meta">
                 <span class="product-cell-name">${this.escapeHtml(p.name)}</span>
                 <span class="product-cell-sub">Supplier: ${this.escapeHtml(p.supplier)}</span>
