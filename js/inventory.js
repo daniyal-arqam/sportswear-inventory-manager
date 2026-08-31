@@ -185,8 +185,6 @@ const InventoryController = {
       const status = window.appStore.getProductStatus(p.stock, p.minThreshold);
       const statusClass = status === 'IN STOCK' ? 'in-stock' : (status === 'LOW STOCK' ? 'low-stock' : 'critical');
       const rowClass = status === 'CRITICAL' ? 'row-critical' : (status === 'LOW STOCK' ? 'row-low-stock' : '');
-      const iconSvg = window.DashboardController.getCategoryIconSvg(p.category);
-
       // Stock bar percentage (max 30 units as visual 100%)
       const stockPercent = Math.min(100, Math.round((p.stock / 30) * 100));
       const barClass = status === 'IN STOCK' ? 'success' : (status === 'LOW STOCK' ? 'warning' : 'danger');
@@ -195,7 +193,6 @@ const InventoryController = {
         <tr class="${rowClass}">
           <td>
             <div class="table-product-cell">
-              <div class="product-avatar-icon">${iconSvg}</div>
               <div class="product-cell-meta">
                 <span class="product-cell-name">${this.escapeHtml(p.name)}</span>
                 <span class="product-cell-sub">Supplier: ${this.escapeHtml(p.supplier)}</span>
@@ -204,7 +201,7 @@ const InventoryController = {
           </td>
           <td><span class="sku-badge">${this.escapeHtml(p.sku)}</span></td>
           <td><span class="category-tag">${this.escapeHtml(p.category)}</span></td>
-          <td><span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">${p.size !== 'N/A' ? this.escapeHtml(p.size) : 'â'}</span></td>
+          <td><span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">${p.size !== 'N/A' ? this.escapeHtml(p.size) : '-'}</span></td>
           <td><span style="font-family: var(--font-mono); font-weight: 700;">${currency}${p.price.toLocaleString()}</span></td>
           <td>
             <div class="stock-metric-cell">
@@ -220,17 +217,11 @@ const InventoryController = {
           <td><span class="status-pill ${statusClass}">${status}</span></td>
           <td>
             <div class="row-actions">
-              <button class="btn-table-action" title="Adjust Stock" onclick="InventoryController.openStockModal('${p.id}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              </button>
+              <button type="button" class="btn-table-action btn-table-text" title="Adjust Stock" onclick="InventoryController.openStockModal('${p.id}')">Edit</button>
               ${p.aiRecommendation ? `
-                <button class="btn-table-action" title="View AI Reorder Recommendation" style="color: var(--accent-primary);" onclick="window.App.navigateTo('ai-reorder')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                </button>
+                <button type="button" class="btn-table-action btn-table-text btn-table-ai" title="View AI Reorder Recommendation" onclick="window.App.navigateTo('ai-reorder')">AI</button>
               ` : ''}
-              <button class="btn-table-action action-delete" title="Delete Product" onclick="InventoryController.deleteProduct('${p.id}', '${this.escapeHtml(p.name)}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              </button>
+              <button type="button" class="btn-table-action btn-table-text action-delete" title="Delete Product" onclick="InventoryController.deleteProduct('${p.id}', '${this.escapeHtml(p.name)}')">Del</button>
             </div>
           </td>
         </tr>

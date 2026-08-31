@@ -353,7 +353,7 @@ class DashboardCharts {
 
       ctx.font = '800 11px "Plus Jakarta Sans", sans-serif';
       ctx.fillStyle = isDark ? '#F8FAFC' : '#0F172A';
-      ctx.fillText(`${percent}% â¢ ${seg.name.split(' ')[0]}`, centerX, centerY + 10);
+      ctx.fillText(`${percent}% | ${seg.name.split(' ')[0]}`, centerX, centerY + 10);
     } else {
       const healthPercent = Math.round((inStock / total) * 100);
 

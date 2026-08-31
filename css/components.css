@@ -829,7 +829,7 @@
 }
 
 .n8n-node-connector::before {
-  content: '↓';
+  content: '\2193';
 }
 
 .product-avatar-icon,
