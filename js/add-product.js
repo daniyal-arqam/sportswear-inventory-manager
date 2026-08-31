@@ -36,6 +36,11 @@ const AddProductController = {
         const value = opt.getAttribute('data-value');
         this.selectedCategory = value;
         selectedText.textContent = value;
+        const iconEl = document.getElementById('selected-category-icon');
+        const optIcon = opt.querySelector('.cat-icon');
+        if (iconEl && optIcon) {
+          iconEl.innerHTML = optIcon.innerHTML;
+        }
         options.forEach(o => o.classList.remove('selected'));
         opt.classList.add('selected');
         wrapper.classList.remove('open');
@@ -243,6 +248,7 @@ const AddProductController = {
 
       // Set Loading State
       submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
       spinner.style.display = 'inline-block';
       btnText.textContent = 'Executing n8n Automation...';
       this.resetStepper();
@@ -254,6 +260,7 @@ const AddProductController = {
 
       // Restore button
       submitBtn.disabled = false;
+      submitBtn.classList.remove('is-loading');
       spinner.style.display = 'none';
       btnText.textContent = 'Add to Inventory';
 
@@ -266,12 +273,12 @@ const AddProductController = {
         }
         window.App.showToast('Product registered in inventory', 'success');
         this.resetForm();
-      } else if (result.status === 'duplicate_sku') {
+      } else if (result.status === 409 || result.status === 'duplicate_sku') {
         this.renderFeedback('duplicate', '409 Conflict: Duplicate SKU Detected', result.message);
         window.App.showToast('409 Conflict: Duplicate SKU', 'warning');
       } else {
         this.renderFeedback('invalid', '400 Bad Request: Invalid Product Data', result.message);
-        window.App.showToast('400 Bad Request: Validation Error', 'critical');
+        window.App.showToast('400 Bad Request: Validation Error', 'error');
       }
     });
   },

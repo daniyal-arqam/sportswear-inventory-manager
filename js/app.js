@@ -170,9 +170,9 @@ const App = {
         if (urlInput && urlInput.value.trim()) {
           window.appStore.saveSettings({
             n8nWebhookUrl: urlInput.value.trim(),
-            n8nMode: 'auto'
+            n8nMode: 'live'
           });
-          this.showToast('n8n Webhook Configuration Saved!', 'success');
+          this.showToast('n8n Webhook Configuration Saved! Live mode enabled.', 'success');
         }
       });
     }
@@ -250,7 +250,7 @@ const App = {
     let iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
     let title = 'Success';
 
-    if (type === 'error') {
+    if (type === 'error' || type === 'critical') {
       iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
       title = 'Action Failed';
     } else if (type === 'warning') {

@@ -169,8 +169,8 @@ class Store {
       } catch (e) {}
     }
     return {
-      n8nMode: 'auto', // 'auto' (hybrid) | 'live' (real HTTP webhook) | 'mock'
-      n8nWebhookUrl: 'http://localhost:5678/webhook/Inventory',
+      n8nMode: 'live', // 'auto' (hybrid) | 'live' (real HTTP webhook) | 'mock'
+      n8nWebhookUrl: 'https://daniyal-arqam.app.n8n.cloud/webhook/Inventory',
       googleSheetDocId: '1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE',
       googleSheetName: 'Sheet1',
       googleSheetAlerts: 'Reorder_Alerts',

@@ -45,9 +45,9 @@
 .btn-submit-product {
   min-width: 220px;
   height: 50px;
-  font-size: 0.98rem;
-  background: linear-gradient(90deg, #CCFF00 0%, #DFFF40 50%, #CCFF00 100%);
-  background-size: 200% auto;
+  padding: 0 24px;
+  font-size: 0.95rem;
+  background: linear-gradient(135deg, #CCFF00 0%, #DFFF40 100%);
   color: #0B0E14;
   font-weight: 700;
   border: none;
@@ -60,6 +60,40 @@
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 0 20px rgba(204, 255, 0, 0.35);
   user-select: none;
+  white-space: nowrap;
+}
+
+.submit-btn-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.submit-btn-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.btn-submit-product.is-loading {
+  min-width: 280px;
+  opacity: 0.95;
+  cursor: wait;
+  background: linear-gradient(135deg, #b8e600 0%, #c9e838 100%);
+  box-shadow: 0 0 24px rgba(204, 255, 0, 0.45);
+  animation: submitPulse 1.6s ease-in-out infinite;
+}
+
+.btn-submit-product.is-loading .submit-btn-icon {
+  display: none;
+}
+
+@keyframes submitPulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(204, 255, 0, 0.35); }
+  50% { box-shadow: 0 0 28px rgba(204, 255, 0, 0.6); }
 }
 
 .btn-submit-product:hover:not(:disabled) {
@@ -74,8 +108,13 @@
 }
 
 .btn-submit-product:disabled {
-  opacity: 0.6;
+  opacity: 0.72;
   cursor: not-allowed;
+  transform: none;
+}
+
+#btn-submit-text {
+  line-height: 1;
 }
 
 /* SPINNER */

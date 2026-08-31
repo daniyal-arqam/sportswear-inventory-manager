@@ -1,8 +1,14 @@
 # Sportswear Inventory Manager
 
-An automated sportswear inventory management workflow built with **n8n, Google Sheets, Groq Chat Model, and an AI Agent**.
+An automated sportswear inventory management workflow built with **n8n, Google Sheets, Groq Chat Model, and an AI Agent**, plus a live frontend dashboard.
 
 I built this project to handle common inventory problems such as invalid product data, duplicate SKUs, missing optional values, and low-stock situations. The workflow validates incoming data before storing it and uses an AI Agent to generate reorder recommendations when stock becomes low.
+
+## Live Demo
+
+🔗 [https://sportswear-inventory-manager.vercel.app/](https://sportswear-inventory-manager.vercel.app/)
+
+The dashboard posts inventory data to the n8n Cloud webhook. Configure the webhook URL in the in-app **n8n Automation** console if needed.
 
 ## Main Features
 
@@ -22,6 +28,8 @@ I built this project to handle common inventory problems such as invalid product
 
 | Technology | Purpose |
 |---|---|
+| HTML / CSS / JavaScript | Live inventory dashboard UI |
+| Vercel | Frontend hosting |
 | n8n | Workflow automation |
 | Google Sheets | Inventory and reorder alert storage |
 | Groq Chat Model | LLM for the AI Agent |
@@ -187,30 +195,34 @@ Rule-based logic handles validation, price/stock rules, the low-stock threshold,
 
 ```text
 sportswear-inventory-manager/
+├── index.html
+├── css/
+├── js/
 ├── README.md
-├── Sportswear-Inventory-Manager.json
-├── Sportswear-Inventory-Manager-Report.pdf
-└── screenshots/
-    ├── workflow-overview.png
-    ├── duplicate-existing-sku.png
-    ├── low-stock-ai-test.png
-    ├── negative-stock.png
-    ├── zero-price.png
-    ├── missing-sku.png
-    ├── optional-size-duplicate.png
-    ├── duplicate-product.png
-    ├── inventory-sheet.png
-    └── reorder-alerts.png
+├── Sportswear Inventory Manager.json
+├── Sportswear Inventory Manager Final Report.pdf
+└── ScreenShots/
 ```
 
 ## How to Use
 
-1. Import `Sportswear-Inventory-Manager.json` into n8n.
+### Frontend (Live Dashboard)
+
+1. Open the [Live Demo](https://sportswear-inventory-manager.vercel.app/), or open `index.html` locally.
+2. Open the **n8n Automation** console in the sidebar.
+3. Paste your n8n Production webhook URL (e.g. `https://YOUR-INSTANCE.app.n8n.cloud/webhook/Inventory`).
+4. Save Config (enables live webhook mode).
+5. Use **Add Product** to send inventory data through the workflow.
+
+### n8n Workflow
+
+1. Import `Sportswear Inventory Manager.json` into n8n (**Import from File**, not URL).
 2. Configure your own Google Sheets credentials.
 3. Configure your own Groq credentials.
-4. Connect your Google Sheet.
-5. Activate the workflow.
-6. Send inventory data to your configured POST webhook.
+4. Connect your Google Sheet (`Sheet1` + `Reorder_Alerts`).
+5. In the Webhook node, set Allowed Origins to your frontend URL (e.g. Vercel domain).
+6. Publish / activate the workflow.
+7. Copy the Production webhook URL into the frontend settings.
 
 > **Security:** API keys, OAuth tokens, passwords, and private credentials should never be committed to this repository. Configure your own credentials inside n8n.
 

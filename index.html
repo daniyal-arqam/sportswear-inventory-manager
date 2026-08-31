@@ -402,28 +402,33 @@
                     </label>
                     <div class="custom-select-wrapper" id="category-select-wrapper">
                       <div class="custom-select-trigger" id="category-select-trigger">
-                        <span id="selected-category-text">Footwear</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span class="custom-select-value">
+                          <span class="cat-icon" id="selected-category-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M4 16h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2z"/></svg>
+                          </span>
+                          <span id="selected-category-text">Footwear</span>
+                        </span>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                       </div>
                       <div class="custom-select-options">
                         <div class="custom-option selected" data-value="Footwear">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M4 16v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M4 16h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2z"/></svg>
+                          <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M4 16h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2z"/></svg></span>
                           <span>Footwear</span>
                         </div>
                         <div class="custom-option" data-value="Apparel">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+                          <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></span>
                           <span>Apparel</span>
                         </div>
                         <div class="custom-option" data-value="Accessories">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                          <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
                           <span>Accessories</span>
                         </div>
                         <div class="custom-option" data-value="Training Gear">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M6 5v14M18 5v14M4 9h4M16 9h4M2 12h20M4 15h4M16 15h4"/></svg>
+                          <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/><path d="M4 9h4M16 9h4M4 15h4M16 15h4"/></svg></span>
                           <span>Training Gear</span>
                         </div>
                         <div class="custom-option" data-value="Sports Equipment">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+                          <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>
                           <span>Sports Equipment</span>
                         </div>
                       </div>
@@ -475,6 +480,9 @@
                 <div class="form-actions-row">
                   <button type="reset" class="btn btn-ghost">Reset Form</button>
                   <button type="submit" class="btn-submit-product" id="btn-submit-inventory">
+                    <span class="submit-btn-icon" id="btn-submit-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    </span>
                     <span class="spinner" id="btn-submit-spinner" style="display: none;"></span>
                     <span id="btn-submit-text">Add to Inventory</span>
                   </button>
@@ -816,14 +824,14 @@
               Active
             </span>
           </div>
-          <div class="form-group" style="margin-bottom: 8px;">
+          <div class="form-group n8n-url-group">
             <label class="form-label" style="font-size: 0.72rem;">Configured Webhook URL (POST)</label>
-            <input type="text" id="cfg-n8n-webhook-url" class="form-input n8n-url-input" value="http://localhost:5678/webhook/Inventory">
+            <input type="text" id="cfg-n8n-webhook-url" class="form-input n8n-url-input" value="https://daniyal-arqam.app.n8n.cloud/webhook/Inventory">
           </div>
-          <div style="display: flex; gap: 12px; align-items: center; justify-content: space-between;">
-            <span style="font-size: 0.74rem; color: var(--text-muted);">Connected Sheet: <code>Sportswear Inventory (1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE)</code></span>
-            <button class="btn btn-primary btn-sm" id="btn-save-n8n-settings">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <p class="n8n-sheet-note">Connected Sheet: <code>Sportswear Inventory (1KsaEzJnn4Q0NIaOEBlLWyEp6tjH3TW3wlKe-Tn2yOiE)</code></p>
+          <div class="n8n-endpoint-actions">
+            <button type="button" class="btn btn-primary btn-save-n8n" id="btn-save-n8n-settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Config
             </button>
           </div>

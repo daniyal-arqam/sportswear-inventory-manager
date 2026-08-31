@@ -1,0 +1,8 @@
+# Accidental nested clone
+sportswear-inventory-manager/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

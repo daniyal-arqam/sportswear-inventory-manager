@@ -13,7 +13,7 @@ const ApiService = {
    */
   async submitProduct(productData, onStepUpdate = () => {}) {
     const state = window.appStore.getState();
-    const webhookUrl = state.settings.n8nWebhookUrl || 'http://localhost:5678/webhook/Inventory';
+    const webhookUrl = state.settings.n8nWebhookUrl || 'https://daniyal-arqam.app.n8n.cloud/webhook/Inventory';
 
     // Prepare exact n8n webhook payload
     const payload = {
